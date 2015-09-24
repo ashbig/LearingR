@@ -1,0 +1,356 @@
+---
+output: html_document
+---
+<!-- Instructions: This is the template you will use to type up your responses to the questions. To produce a document that you can turn in just click on the Knit button above. All you need to do to complete the homework is to type up your brief answers as well as, when necessary, the R code in the appropriate spaces provided below.
+-->
+
+_Remember_: We encourage you to discuss problems with other students (and, of course, with the course head and the TFs), but you must write your final answer in your own words. Solutions prepared "in committee" are not acceptable. See syllabus for details.
+
+_Lectures_: This homework is based primarily on information from Lectures 10, 11, 12, and 13.
+
+Problem Set #3
+========================================================
+
+#### Your name: Ashkan Bigdeli
+#### Collaborators' names:Nam Pho, Brittainy Roth
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(mosaic)
+library(mosaicData)
+library(Lock5Data)
+
+```
+
+
+## Question 1: Case Study on Restaurant Tips
+Read the Essential Synthesis Case Study (Unit B Case Study: Restaurant Tips). In the physical textbook this is on pages 298-303. This case study walks you through much of what you have learned so far. Read it carefully and note for yourself what you would not know how to do yourself. Then, find a friend and discuss the following:
+
+a) _Regarding the outliers discussion, explain why the P-value changed when outliers were removed._
+The p-values changed to show a stronger association. This is because a few generous tippers on small tabs showed less of a correlation. 
+
+b) _Given all the analysis, what do you believe about the actual relationship between the bill and percent tip? Why?_
+I think the actual relationship is the larger the bill the larger the tip, but they are both about 18% of the bill. I think this because the relationship was shown even with outliers, and the p-vlaue without outliers did nothing but confirm it. 
+
+c) _Even if there were a statistically significant relationship between bill size and tip percentage in the full dataset, how much do you think it matters? For example, how much more (or less) would a $60 bill get tipped if there were no relationship versus if there were one?_
+I think if there were a relationship in % you would see a larger tip on a $60 dollar bill, but I do not think it matters necessarily. If someone tips a dollar on a very small tab, say $2, it does not mean that this will extend to a $30 dollar tip on a $60 dollar bill. 
+
+d) _Write a sentence to let us know if this exercise proved useful._
+It was useful to think about just how the outliers can affect a p-value. 
+
+## (Optional) WileyPlus 3.64 (Section 3.2, page 192). 
+This works on understanding the language of confidence intervals. We encourage you to discuss with classmates to get practice with this.
+
+
+## Question 2: WileyPlus 4.16 (Section 4.1, page 232).
+Are children with higher exposure to pesticides more likely to develop ADHD (attention-deficit/hyperactivity disorder)? In a recent study, authors measured levels of urinary dialkyl phosphate (DAP, a common pesticide) concentrations and ascertained ADHD diagnostic status (Yes/No) for 1139 children who were representative of the general US population.8 The subjects were divided into two groups based on high or low pesticide concentrations, and we compare the proportion with ADHD in each group.
+(a)  Define the relevant parameter(s) and state the null and alternative hypotheses.
+ A: The relevant parameter is children who have been exposed to high levels of pesticides and been diagnosed with ADHD. The alternative hypothesis would be that higher exposure rates to pesticides result in a greater chance of developing ADHD and the null hypothesis would be that pesticide and ADHD diagnoses' are not linked. 
+(b)  In the sample, children with high pesticide levels were more likely to be diagnosed with ADHD. Can we necessarily conclude that, in the population, children with high pesticide levels are more likely to be diagnosed with ADHD? (Whether or not we can make this generalization is, in fact, the statistical question of interest.) 
+A: It states that they sampled from a population representative of the US population, which is good. Sadly it is an observational study, so while the parameters are sound I still do not think you can conclude causation. 
+(c)  To assess statistical significance, we assume the null hypothesis is true. What does that mean in this case? State your answer in terms of pesticides and ADHD.
+This would mean that pesticides exposure has no correlation to ADHD.
+ (d)  The study found the results to be statistically significant. Which of the hypotheses, H0 or Ha, is no longer a very plausible possibility?
+Statistically significant results disprove the null hypothesis. 
+ (e)  What do the statistically significant results imply about pesticide exposure and ADHD?
+It supports the alternative hypothesis that pesticide exposure makes children more likely to develop ADHD.
+
+
+
+## Question 3: WileyPlus 4.86 (Section 4.3, page 263).
+This problem will help you learn how to think about and explain hypothesis tests.
+Question #3 4.86 Radiation from Cell Phones and Brain Activity
+Does heavy cell phone use affect brain activity? There is some concern about possible negative effects of radiofrequency signals delivered to the brain. In a randomized matched-pairs study,24 47 healthy participants had cell phones placed on the left and right ears. Brain glucose metabolism (a measure of brain activity) was measured for all participants under two conditions: with one cell phone turned on for 50 minutes (the "on" condition) and with both cell phones off (the "off" condition). The amplitude of radiofrequency waves emitted by the cell phones during the "on" condition was also measured.
+
+(a)  Is this an experiment or an observational study? Explain what it means to say that this was a "matched-pairs" study. 
+A: This is an experiment as you control the variables you are observing.  A matched pair study can be used when there are two treatment variables, when we say that this study is a matched pair we are referring to the left and right ears being matched to both the on and off condition. 
+(b)  How was randomization likely used in the study? Why did participants have cell phones on their ears during the "off" condition?
+A: The randomization was likely in which ear, left or right, the participants were first subjected to. The "off" conditions is to serve as a control for brain glucose metabolism. 
+(c)	The investigators were interested in seeing whether average brain glucose metabolism was different based on whether the cell phones were turned on or off. State the null and alternative hypotheses for this test.
+A: Alternative = Cell phone use decreases brain glucose metabolism. 
+     Null = Cell phone uses has no effect on brain glucose metabolism. 
+(d)	The p-value for the test in part (c) is 0.004. State the conclusion of this test in context.
+A: As the p value is very low meaning it is highly unlikely to occur under the null hypothesis, concluding that cell phone use decreases brain glucose metabolism. 
+(e)	The investigators were also interested in seeing if brain glucose metabolism was significantly correlated with the amplitude of the radio frequency waves. What graph might we use to visualize this relationship?
+A: This would be two quantitative variables (radio frequency vs. brain glucose metabolism) so we could use a scatter plot to determine if there is any correlation. 
+(f)	State the null and alternative hypotheses for the test in part (e).
+A: Alternative  = Radio frequency is directly correlated to brain glucose metabolism.
+            Null = There is no relationship between radio frequency and brain glucose level. 
+(g)	The article states that the p-value for the test in part (e) satisfies p<0.001. State the conclusion of this test in context.
+A: Again this would reject the null hypothesis meaning that you would see some correlation (positive or negative) between radio frequency and brain glucose metabolism. 
+
+
+## (Optional) 4.30-4.36 (Section 4.1, page 234). 
+These are quick, where you identify if testing is appropriate. They also are those irritating book questions that focus on the language of hypothesis testing. See WileyPlus for solutions.
+n Exercises 4.30 to 4.36, indicate whether the analysis involves a statistical test. If it does involve a statistical test, state the population parameter(s) of interest and the null and alternative hypotheses.
+
+## Question 4: WileyPlus 4.37, 4.38 (Section 4.1, page 235), and 5.56 (Section 5.2, page 248). 
+Only turn in 4.38 and 5.56. Answers on WileyPlus for 4.37.
+Question #4 4.38 Influencing Voters: Is a Phone Call More Effective?
+Suppose, as in Exercise 4.37, that we wish to compare methods of influencing voters to support a particular candidate, but in this case we are specifically interested in testing whether a phone call is more effective than a flyer. Suppose also that our random sample consists of only 200 voters, with 100 chosen at random to get the flyer and the rest getting a phone call.
+(a)  State the null and alternative hypotheses in this situation.
+.  The null hypothesis is phone calls and flyers do not effect candidate support. The alternative hypothesis is phone calls influence voters' do sway candidate support
+.	(b)  Display in a two-way table possible sample results that would offer clear evidence that the phone call is more effective.
+	Supported particular candidate	Did not support particular candidate
+Received flyer	25	75
+Received phone call	100	0
+
+(c) Display in a two-way table possible sample results that offer no evidence at all that the phone call is more effective.
+	Supported particular candidate	Did not support particular candidate
+Received flyer	100	0
+Received phone call	0	100
+
+(d)  
+Display in a two-way table possible sample results for which the outcome is not clear: There is some evidence in the sample that the phone call is more effective but it is possibly only due to random chance and likely not strong enough to generalize to the population.
+	Supported particular candidate	Did not support particular candidate
+Received flyer	45	55
+Received phone call	55	45
+
+
+Question #4 4.56 Influencing Voters: Is a Phone Call Better Than a Flyer?
+Exercise 4.38 describes a study to investigate whether a recorded phone call is more effective than a flyer in persuading voters to vote for a particular candidate. The response variable is the proportion of voters planning to vote for the candidate, with pc and pf representing the proportions for the two methods (receiving a phone call and receiving a flyer, respectively.) The sample statistic of interest is  . We are testing H0:pc=pf vs Ha:pc>pf. A randomization distribution for this test is shown in Figure 4.18.
+ 
+Figure 4.18   
+Randomization distribution using n = 1000 for testing H0:pc=pf
+(a)  Sketch a smooth curve that roughly approximates the distribution in Figure 4.18 and shade in the proportion of the area corresponding to the p-value for the sample statistic D=0.3.
+.	Was told not to hand in a sketch
+(b)  Four possible sample statistics are given, along with four possible p-values. Match the statistics with the p-values:
+ 
+.	0.1 - 0.001
+.	0.3 - 0.012
+.	0.5 - 0.085
+.	0.7 - 0.365
+
+(c)  Interpret the p-value 0.001 in terms of the probability of the results happening by random chance.
+.	The smaller the p-value, the smaller the probability the results happen randomlye. This would mean a value of .01 is significant.
+(d)  Of the four p-values given in part (b), which provides the strongest evidence that a phone call is more effective?
+.	0.001 provides the strongest evidence that a phone calls are effective.
+
+
+## Question 5: R Tutorial 
+Do the R Tutorial accompanying this homework. We will give you a point for doing it on faith.
+
+Done!
+
+
+## Question 6: WileyPlus 3.36 and 3.38 (Section 3.1, page 178)
+For 3.36, actually use R to make a histogram of the sampling distribution for this problem and turn that histogram in.
+
+This question was marked as cancelled by Prof. Miatrix via Canvas. 
+
+
+## Question 7: Impact of Sample Size
+Here we investigate how the standard error of a statistic is impacted by sample size. The following code will generate the sampling distribution of a mean of _n_ = 20 movies taken from `HollywoodMovie2011$Budget`. Run it and make a histogram.
+
+This question was marked as optional by Prof. Miatrix via Canvas. 
+
+```{r, fig.height=5, fig.width=5}
+
+# loading the dataset
+data(HollywoodMovies2011)
+hwclean <- subset(HollywoodMovies2011, !is.na(Budget))
+budgets <- hwclean$Budget 
+samp.dist <- replicate(1000, {
+  smp <- sample(budgets, size=20, replace=FALSE) 
+  mean(smp)
+  })
+
+# creating the histogram
+histogram(samp.dist)
+
+```
+
+a) _How many data points are in your population? How many in each of your samples?_
+
+
+b) _Why do I call this the sampling distribution instead of a bootstrap distribution, and why do I sample without replacement here?_
+
+
+c) _We can calculate the standard deviation of the sampling distribution, above, with `sd(budgets )`. This is the true standard error (SE). Now, interpret what the following tells us:_
+
+```{r}
+SE.20 <- sd(samp.dist)
+mean(budgets) - 2*SE.20
+mean(budgets) + 2*SE.20
+
+```
+
+_Also, explain why this is *not* a confidence interval._
+
+d) _Calculate the SE for n = 1; 2; 4; 8; 16; 32 by changing the replicate code. You will use your results make a data set of n and SE and $SE^2$ (i.e., the variance of your statistic). Cut and paste the replicate, change the size of the sample, and also change the variable name from SE.20 to SE.4 or whatever number is appropriate. This will allow you to store all your results at the same time in the R workspace._
+
+e) _As you do your simulations, make histograms of all your `samp.dist`. Describe the trend in the series of histograms from $n = 1$ to $n = 32$. (But don't turn in all the histograms.)_
+
+f) _Now make a data set using R code._
+
+Below is some R code to help you get started (note that you will have to uncomment the R code by removing the # symbol for each line):
+
+```{r}
+# ns <- c( 1, 2, 4, 8, 16, 32 )
+# SEs <- c( SE.1, SE.2, SE.4, SE.8, SE.16, SE.32 )
+# dat <- data.frame( n=ns, SE=SEs, SE2 = SEs^2 )
+```
+
+Once done, type `dat` and R should give you a nice table.
+
+g) _Make a scatterplot explaining SE (or $SE^2$) with n._
+
+
+h) _Describe the relationship between n and SE or n and $SE^2$._
+
+
+i) _Is it appropriate to run a regression?_
+
+
+j) _(Optional) If you did the optional part of the R tutorial, is it appropriate to run a regression for $log(n)$ vs. $log(sd)$?_
+
+Below is some R code to help you get started (note that you will have to uncomment the R code by removing the # symbol for each line):
+
+```{r}
+# dat$logn <- log(dat$n)
+# dat$logSE <- log(dat$SE)
+# plot(logn ~ logSE, data=dat)
+
+```
+
+k) _Complete the following sentence: To halve our standard error, we would need to take a sample BLANK times as big._
+
+
+l) _Now calculate the SE for n = 50; 75; 100; 125 as well. Make a new plot. Does your trend, above, continue as expected? This is due to the finite size of the population. As samples get close to the population size, your SE will drop sharply. Try to give a reason why._
+
+
+## Question 8: WileyPlus 3.84 (Section 3.3, page 204).
+Do this in R. It involves the bootstrap. If you can do this problem, you are on your way to generating confidence intervals for anything you want. Save you R code for yourself; it will be a good reference. See the sample lecture code from Lecture 12 for a starting point.
+
+```{r}
+data(CommuteAtlanta)
+mean(~Distance, data=CommuteAtlanta)
+sd(~Distance, data=CommuteAtlanta)
+boots <- replicate(1000, {smp <- sample(CommuteAtlanta$Distance, size=500, replace=TRUE) 
+mean(smp)})
+histogram(boots)
+SE <- sd(boots)
+SE
+```
+## Question 9: Immunization Effectiveness
+Use R for this problem. The data on Table 1 shows the percent of children immunized with the DPT vaccine (for diphtheria, poliomyelitis, andtetanus) and the under age 5 mortality rate (number of children who do not survive past age 5 per 1,000 live births). The data is also on the web site in csv format, in the file `child_mortality.csv`. See prior homework or the R Cookbook for instructions on how to load a csv file.
+
+The variable giving the percent immunized is `Percent.Imm`; under age 5 mortality is the variable
+`Mortality.Rate`.
+
+#### Table 1: Immunization Data for "Immunization Effectiveness" problem
+
+Nation      |           % Immunized       |   Deaths per 1000 Live Births
+------------|-----------------------------|-----------------------------------
+Bolivia     |           40                |       165
+Brazil      |           54                |       85
+Canada      |           85                |       9
+China       |           95                |       43
+Egypt       |           81                |       94
+Ethiopia    |           26                |       226
+Finland     |           90                |       7
+France      |           95                |       9
+Greece      |           83                |       12
+India       |           83                |       145
+Italy       |           85                |       11
+Japan       |           83                |       6
+Mexico      |           65                |       51
+Poland      |           98                |       18
+Senegal     |           47                |       189
+Turkey      |           74                |       90
+United Kingdom |        75                |       10
+United States  |        97                |       12
+USSR          |         79                |       35
+Yugoslavia    |         91                |       27
+
+
+a) _Make a scatterplot of the relationship between these two variables and add the least-squares regression line to the scatterplot, using Percent.Imm as the predictor (horizontal axis) and `Mortality.Rate` as the response variable (vertical axis)._
+```{r}
+child_mortality <- read.csv("C:/Users/ashbig/Desktop/child_mortality.csv")
+plot(Mortality.Rate~Percent.Imm, data= child_mortality)
+my.lm=lm(Mortality.Rate~Percent.Imm,data=child_mortality)
+my.lm
+abline(my.lm)
+```
+
+b) _Describe the relationship between your two variables and assess the legitimacy of a linear model here._
+It does make sense, you see as immunizations increase mortality is lowered, half of the values can be find above and below the line with two data points through it. 
+
+c) _What is the interpretation of the estimates of the intercept and slope in the specific context of this problem?_
+When a child doesnt recieve any immunizations it will be 278. As the percent of children immunized increase by 1 % the mortality rate will decrease -2.83%.
+
+d) _Generate a 95% confidence interval for the slope using the bootstrap technique and the SE method._
+```{r}
+boots=replicate(1000,{boot.samp=resample(child_mortality)
+                      boot.lm=lm(Mortality.Rate~Percent.Imm,data=boot.samp)
+                      coef(boot.lm)[2]})
+SE=sd(boots)
+SE
+278.26 + 2 * SE
+278.26 - 2 * SE
+-2.83 + 2 * SE
+-2.83 - 2 * SE
+```
+
+The following R code should take a single bootstrap sample and compute the slope. Note that you will have to uncomment the R code by removing the # symbol for each line.
+
+```{r}
+boot.samp <- resample(child_mortality)
+boot.lm <- lm(Mortality.Rate ~ Percent.Imm, data=boot.samp)
+coef(boot.lm)[2]
+coef(boot.lm)
+```
+
+
+e) _Check that the SE method is valid by examining the bootstrap sampling distribution. What are the three things you need to check? Is the SE method valid here?_
+The three things to check would be population size, a boostrap sample number of higher than 30 and and that the data be normally distrubted. Based upon this the SE method is valid here. 
+
+f) _Interpret your 95% CI in the context of the problem._
+The 95% CI likely is closer to the -2.98 immunization we see in the above code in d. 
+
+g) _Using your model, predict the change in the under-5 mortality rate for Bolivia if Bolivia were to increase the percentage of children immunized from 40% to 75%. Be sure to specify whether the change would be an increase or decrease._
+So we can plug in our numbers to get the decrease in mortality rate y = mx+b. (-2.83*75)+278.27 = 66.01. Now we know that Bolvia's mortality rate is 165 so we can subtract out our new rate of 66.01. This means there would be 98.99 fewer deaths a year. 
+
+h) _If Bolivia did implement such a program and achieved 75% immunization, how do you feel your prediction would actually do? Why?_
+I feel confident that it would do well as our previous confidence intervals were a variation a range of about 4 give or take. However, as always there are other variables in play when it comes to child mortatilty. There may be other factors about the children of Bolivia's mortality that is not as simple as an immunization correlation. 
+
+i) _The predicted change uses the slope of our regression line. We can thus generate a 95% confidence interval for the predicted change by using the confidence interval of the slope. Do this by using the using the lowest conceivable and highest conceivable slopes from you CI above to generate two different predicted changes. What is your final CI for predicted change?_
+CI1=278.260+(-2.83(75))
+CI2=225.387+(-2.90(75))
+This means that the final CI can be anywhere between CI 1 and 2 in regards to the mortality rate of children in boliva.
+
+
+j) _Explain in your own words why generating a CI this way is valid._
+We used the slope from the 95% confidence interval, so you you can assume it is valid as everything else remains constant.
+
+k) _The regression line shows an association. This is not necessarily causal, so your prediction, above, is not necessarily what would actually happen. Now we have a confidence interval. Does this fix the problem? Explain why or why not._
+I think the confidence interval proves a stronger association, but necessarily supportive of causation.
+
+l) _Now say we are trying to predict what the mortality rate would be, on average, for countries with 90% immunization. What is our best guess?_
+```{r}
+predict_mort = lm (Mortality.Rate ~ Percent.Imm, data=child_mortality)
+coef(predict_mort)[1] + 90*coef(predict_mort)[2]
+```
+
+m) _We need a SE for our prediction. Obtain one by modifying your bootstrapping code for the slope so that it generates a prediction for 90% immunization each iteration and then take the standard deviation of those values._ 
+
+To have R predict the mortality rate for 90% immunization, try the following R code (making sure to uncomment the code by removing the # symbols for each line):
+
+```{r}
+boots2=replicate(1000,{boot.samp=resample(child_mortality)
+                      boot.lm=lm(Mortality.Rate~Percent.Imm,data=boot.samp)
+                      coef(boot.lm)[2] + 90*coef(boot.lm)[2]})
+
+```
+
+
+n) _Use a normal approximation to generate an 80% confidence interval for the 90% prediction._
+```{r}
+SE=sd(boots2)
+SE
+mean(boots2) + qnorm(0.1) * SE
+mean(boots2) - qnorm(0.1)* SE
+```
+
+
+o) _Say we wanted to do generate a confidence interval as above for 20% immunization. Would this be a good idea or not? Why or why not?_
+I do not believe a confidence interval of 20% would be useful in any projections. 
