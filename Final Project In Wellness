@@ -1,0 +1,202 @@
+---
+output: pdf_document
+---
+---
+output: html_document
+
+Stat E-100 Final Project
+========================================================
+
+#### Your name: Ashkan Bigdeli
+#### Collaborators' names: Brittainy Roth, Emily Runey
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(mosaic)
+##install.packages("Hmisc", dependencies=T)
+library(Hmisc)
+```
+
+Analysis of USQ
+```{r}
+## Read CSV and obtain some basics about the data including histograms.
+USQ = read.csv("USQ.csv",header=TRUE);
+favstats(~T_W1, data = USQ)
+hist(USQ$T_W1, main="USQ Total Week 1", xlab="USQ Total Week 1")
+favstats(~T_W2, data = USQ)
+hist(USQ$T_W2, main="USQ Total Week 2", xlab="USQ Total Week 2")
+##Paired T-tests for Women vs. Men by weeks. 
+t.test(USQ$M_W1,USQ$W_W1)
+t.test(USQ$M_W2,USQ$W_W2)
+## Create variables to store means for plotting
+MW1=mean(USQ$M_W1, na.rm=TRUE)
+MW2=mean(USQ$M_W2, na.rm=TRUE)
+WW1=mean(USQ$W_W1, na.rm=TRUE)
+WW2=mean(USQ$W_W2, na.rm=TRUE)
+##Bar plot of means
+barplot(matrix(c(WW1,WW2,MW1,MW2), nr=2),main="Mean Scores: USQ", xlab="Sex", 
+        beside=TRUE, col=c("darkblue", "red"),ylim = c(0, 30),names.arg=c("Female","Male"))
+legend("topright", c("Week 1","Week 2"), pch=15, col=c("darkblue", "red"), bty="n")
+MW1_S=sd(USQ$M_W1, na.rm=TRUE)
+MW2_S=sd(USQ$M_W2, na.rm=TRUE)
+WW1_S=sd(USQ$W_W1, na.rm=TRUE)
+WW2_S=sd(USQ$W_W2, na.rm=TRUE)
+means=(c(WW1,WW2,MW1,MW2))
+d= data.frame(x=c(1:2),y=means,sd = (c(WW1_S,WW2_S,MW1_S,MW2_S)))
+with (data = d, exp =errbar(x, y, y+sd, y-sd, add=T, pch=1, cap=.1,))
+box()
+```
+
+
+Analysis of LSS
+```{r}
+LSS = read.csv("LSS.csv",header=TRUE);
+favstats(~T_W1, data = LSS)
+favstats(~T_W2, data = LSS)
+t.test(LSS$M_W1,LSS$W_W1)
+t.test(LSS$M_W2,LSS$W_W2)
+MW1=mean(LSS$M_W1, na.rm=TRUE)
+MW2=mean(LSS$M_W2, na.rm=TRUE)
+WW1=mean(LSS$W_W1, na.rm=TRUE)
+WW2=mean(LSS$W_W2, na.rm=TRUE)
+barplot(matrix(c(WW1,WW2,MW1,MW2), nr=2),main="Mean Scores: LSS", xlab="Sex", 
+        beside=TRUE, col=c("darkblue", "red"),ylim = c(0, 120),names.arg=c("Female","Male"))
+legend("topright", c("Week 1","Week 2"), pch=15, col=c("darkblue", "red"), bty="n")
+box()
+```
+
+Analysis of Coping
+```{r}
+COPING = read.csv("COPING.csv",header=TRUE);
+favstats(~T_W1, data = COPING)
+favstats(~T_W2, data = COPING)
+t.test(COPING$M_W1,COPING$W_W1)
+t.test(COPING$M_W2,COPING$W_W2)
+MW1=mean(COPING$M_W1, na.rm=TRUE)
+MW2=mean(COPING$M_W2, na.rm=TRUE)
+WW1=mean(COPING$W_W1, na.rm=TRUE)
+WW2=mean(COPING$W_W2, na.rm=TRUE)
+barplot(matrix(c(WW1,WW2,MW1,MW2), nr=2),main="Mean Scores: Coping", xlab="Sex", 
+        beside=TRUE, col=c("darkblue", "red"),ylim = c(0, 100),names.arg=c("Female","Male"))
+legend("topright", c("Week 1","Week 2"), pch=15, col=c("darkblue", "red"), bty="n")
+box()
+```
+
+
+Analysis of POMS Tension
+```{r}
+POMS_T = read.csv("POMS_T.csv",header=TRUE);
+favstats(~T_W1, data = POMS_T)
+favstats(~T_W2, data = POMS_T)
+t.test(POMS_T$M_W1,POMS_T$W_W1)
+t.test(POMS_T$M_W2,POMS_T$W_W2)
+MW1=mean(POMS_T$M_W1, na.rm=TRUE)
+MW2=mean(POMS_T$M_W2, na.rm=TRUE)
+WW1=mean(POMS_T$W_W1, na.rm=TRUE)
+WW2=mean(POMS_T$W_W2, na.rm=TRUE)
+barplot(matrix(c(WW1,WW2,MW1,MW2), nr=2),main="Mean Scores: POMS Tension", xlab="Sex", 
+        beside=TRUE, col=c("darkblue", "red"),ylim = c(0, 20),names.arg=c("Female","Male"))
+legend("topright", c("Week 1","Week 2"), pch=15, col=c("darkblue", "red"), bty="n")
+box()
+```
+
+Analysis of POMS Depression
+```{r}
+POMS_D = read.csv("POMS_D.csv",header=TRUE);
+favstats(~T_W1, data = POMS_D)
+favstats(~T_W2, data = POMS_D)
+t.test(POMS_D$M_W1,POMS_D$W_W1)
+t.test(POMS_D$M_W2,POMS_D$W_W2)
+MW1=mean(POMS_D$M_W1, na.rm=TRUE)
+MW2=mean(POMS_D$M_W2, na.rm=TRUE)
+WW1=mean(POMS_D$W_W1, na.rm=TRUE)
+WW2=mean(POMS_D$W_W2, na.rm=TRUE)
+barplot(matrix(c(WW1,WW2,MW1,MW2), nr=2),main="Mean Scores: POMS Depression", xlab="Sex", 
+        beside=TRUE, col=c("darkblue", "red"),ylim = c(0, 25),names.arg=c("Female","Male"))
+legend("topright", c("Week 1","Week 2"), pch=15, col=c("darkblue", "red"), bty="n")
+box()
+```
+
+Analysis of POMS Anxiety
+```{r}
+POMS_A = read.csv("POMS_A.csv",header=TRUE);
+favstats(~T_W1, data = POMS_A)
+favstats(~T_W2, data = POMS_A)
+t.test(POMS_A$M_W1,POMS_A$W_W1)
+t.test(POMS_A$M_W2,POMS_A$W_W2)
+MW1=mean(POMS_A$M_W1, na.rm=TRUE)
+MW2=mean(POMS_A$M_W2, na.rm=TRUE)
+WW1=mean(POMS_A$W_W1, na.rm=TRUE)
+WW2=mean(POMS_A$W_W2, na.rm=TRUE)
+barplot(matrix(c(WW1,WW2,MW1,MW2), nr=2),main="Mean Scores: POMS Anxiety", xlab="Sex",
+      beside=TRUE, col=c("darkblue", "red"),ylim = c(0, 15),names.arg=c("Female","Male"))
+legend("topright", c("Week 1","Week 2"), pch=15, col=c("darkblue", "red"), bty="n")
+box()
+```
+
+
+Analysis of POMS Vigor
+```{r}
+POMS_V = read.csv("POMS_V.csv",header=TRUE);
+favstats(~T_W1, data = POMS_V)
+favstats(~T_W2, data = POMS_V)
+t.test(POMS_V$M_W1,POMS_V$W_W1)
+t.test(POMS_V$M_W2,POMS_V$W_W2)
+MW1=mean(POMS_V$M_W1, na.rm=TRUE)
+MW2=mean(POMS_V$M_W2, na.rm=TRUE)
+WW1=mean(POMS_V$W_W1, na.rm=TRUE)
+WW2=mean(POMS_V$W_W2, na.rm=TRUE)
+barplot(matrix(c(WW1,WW2,MW1,MW2), nr=2),main="Mean Scores: POMS Vigor", xlab="Sex", 
+        beside=TRUE, col=c("darkblue", "red"),ylim = c(0, 30),names.arg=c("Female","Male"))
+legend("topright", c("Week 1","Week 2"), pch=15, col=c("darkblue", "red"), bty="n")
+```
+
+
+Analysis of POMS Fitigue
+```{r}
+POMS_F = read.csv("POMS_F.csv",header=TRUE);
+favstats(~T_W1, data = POMS_F)
+favstats(~T_W2, data = POMS_F)
+t.test(POMS_F$M_W1,POMS_F$W_W1)
+t.test(POMS_F$M_W2,POMS_F$W_W2)
+MW1=mean(POMS_F$M_W1, na.rm=TRUE)
+MW2=mean(POMS_F$M_W2, na.rm=TRUE)
+WW1=mean(POMS_F$W_W1, na.rm=TRUE)
+WW2=mean(POMS_F$W_W2, na.rm=TRUE)
+barplot(matrix(c(WW1,WW2,MW1,MW2), nr=2),main="Mean Scores: POMS Fatigue", xlab="Sex", 
+        beside=TRUE, col=c("darkblue", "red"),ylim = c(0, 20),names.arg=c("Female","Male"))
+legend("topright", c("Week 1","Week 2"), pch=15, col=c("darkblue", "red"), bty="n")
+```
+
+
+Analysis of POMS Confidence
+```{r}
+POMS_C = read.csv("POMS_C.csv",header=TRUE);
+favstats(~T_W1, data = POMS_C)
+favstats(~T_W2, data = POMS_C)
+t.test(POMS_C$M_W1,POMS_C$W_W1)
+t.test(POMS_C$M_W2,POMS_C$W_W2)
+MW1=mean(POMS_C$M_W1, na.rm=TRUE)
+MW2=mean(POMS_C$M_W2, na.rm=TRUE)
+WW1=mean(POMS_C$W_W1, na.rm=TRUE)
+WW2=mean(POMS_C$W_W2, na.rm=TRUE)
+barplot(matrix(c(WW1,WW2,MW1,MW2), nr=2),main="Mean Scores: POMS Confidence", xlab="Sex", 
+        beside=TRUE, col=c("darkblue", "red"),ylim = c(0, 20),names.arg=c("Female","Male"))
+legend("topright", c("Week 1","Week 2"), pch=15, col=c("darkblue", "red"), bty="n")
+```
+
+Analysis of TMBQ
+```{r}
+TMBQ = read.csv("TMBQ.csv",header=TRUE);
+favstats(~T_W1, data = TMBQ)
+favstats(~T_W2, data = TMBQ)
+t.test(TMBQ$M_W1,TMBQ$W_W1)
+t.test(TMBQ$M_W2,TMBQ$W_W2)
+MW1=mean(TMBQ$M_W1, na.rm=TRUE)
+MW2=mean(TMBQ$M_W2, na.rm=TRUE)
+WW1=mean(TMBQ$W_W1, na.rm=TRUE)
+WW2=mean(TMBQ$W_W2, na.rm=TRUE)
+barplot(matrix(c(WW1,WW2,MW1,MW2), nr=2),main="Mean Scores: POMS Vigor", xlab="Sex", 
+        beside=TRUE, col=c("darkblue", "red"),ylim = c(0, 150),names.arg=c("Female","Male"))
+legend("topright", c("Week 1","Week 2"), pch=15, col=c("darkblue", "red"), bty="n")
+```
+
