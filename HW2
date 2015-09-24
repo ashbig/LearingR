@@ -1,0 +1,215 @@
+---
+output: pdf_document
+---
+<!-- Instructions: This is the template you will use to type up your responses to the exercises. To produce a document that you can turn in, just click on Knit PDF above.  All you need to do to complete this part of the homework is to type up your BRIEF answers and the R code (when necessary) in the spaces provided below. If you want to find out more about the markdown language click on the MD icon. You can also copy and paste all your anwers to an Microsoft Word document. If you choose this approach, please make sure that you convert your Microsoft Word document to a PDF file and include all your R code at the end of your document. Only submitted PDF files will be accepted and graded.
+
+IMPORTANT: You must work through the hw2 R tutorial.pdf before embarking on this part of your assignment.  Also, please read the relevant hw2.pdf files before messing with this document!!!
+-->
+
+Homework 2
+========================================================
+
+### Your name: Ashkan Bigdeli
+
+### Collaborators names: Nam Pho, Brittany Roe
+
+```{r echo=FALSE, message=FALSE}
+# This loads your data
+library( mosaic )
+```
+
+### 1) HIP Study
+ For the full question, see hw2.pdf file.
+#### a) Deaths in treatment is 39 and in the control it is 63.
+#### b) Yes, the death rate is significantly lower in the group that was screened. 
+#### c) Some in the refused group may have refused the treatment knowing they did not require such treatment. These reasons include previous screening be it genetic or mammagram, or previous contraction and resolution of breat cancer. 
+#### d) Yes the death rates of those screened vs. control groups is sufficient evidence for efficacy. 
+
+### 2) Estimating by Eye
+ For the full question, see hw2.pdf file.
+#### a)94 for the mean and 2.5 for the standard deviation
+#### b)9
+#### c) No not at this time, you would want to remove the outliers to create a line that best fits time vs. accuracy. The outliers at 15 and roughly 18 would make the data difficult to fit. 
+
+### 3) Normal distributions, IQRs, box plots, and approximations.
+Say you have a dataset with 1000 points.  A histogram shows they are roughly normally distributed with  a mean of 10 and a standard deviation of 4. Only part (e) requires R.  For the full question, see hw2.pdf file.
+
+#### a) median = 10 q1=7, q3=13, IQR=6
+#### b) You would expect roughly 10 or less outliers. 7(-1.5x6)= -2 and 13(1.5x6) = 22. This means you are 3 standard deviations away from the norm encompassing. By a bell shape definition this would be 34 + 13.5 + 2.0 amounting to 49.5% of the data. As stated the data is distrubted normally and is symetrical. Knowing this we can double our values for each end of the bell and know that 49.5 x 2 is 99.0% of the data. Out of a data set of 1000 this is roughly 10 outliers (990/1000).
+#### c)
+```{r}
+smp = rnorm(1000, mean = 10, sd = 4)
+boxplot(smp)
+```
+#### d) Here the standard deviations would encompass more of the outliers. The mean is now 100 and the sd is 12 the 1.5IQR rule would yield about 3.3 standard deviations from the mean. This would be. 34 +13.5 + 2.0 + .3 using the bell shaped percentiles. This would mean that you get about 98.6% of the data. Out of 1000 you would expect roughly 4 outliers.   
+#### e) Generate a random set of 1000 normally distributed numbers and make a box plot to check your work.  Do it for both the $\mu=10, \sigma=4$ and the $\mu=100, \sigma=12$ cases.  Generating random normal data is easy!  Try this:
+   
+```{r}
+smp = rnorm(1000, mean = 10, sd = 4)
+boxplot(smp)
+smp2 = rnorm(1000, mean = 100, sd = 12)
+boxplot(smp2)
+
+```
+
+### 4) R Tutorial
+
+I did the tutorial
+
+### 5) House Prices
+
+The dataset HomesForSale and HomesForSaleNY, both in the Lock5Data package, have samples of homes priced out on Zillow.com, an internet site that assesses home prices. This overall problem is to build models to predict prices. Models like this might be useful if one were being somewhat strategic about thinking about what makes homes as expensive as they are.
+
+#### a) Starting with the HomesForSaleNY dataset, make a model to predict price using size (in square feet).  What is the estimated cost of each additional thousand square feet?
+
+```{r}
+library( Lock5Data )
+data( HomesForSaleNY )
+# fix the next line!
+ll = lm(  Price ~ Size, data=HomesForSaleNY )
+ll
+```
+
+#### a)  You would estimate 470k dollars every additional 1000 square feet as shown by the coefficent. 
+
+
+#### b) Make a residual plot.
+#### A linear model is not entirely appropriate as there are several houses that do not fit the model. Additionally it may not scale linearly. There may be a point where the size of the house is not directly related to the price. 
+```{r fig.height=4}
+HomesForSaleNY$residual = resid(ll)
+plot( residual ~ Size, data=HomesForSaleNY )
+```
+
+#### c) Now we are going to drop these three outliers.  One way is to remove the corresponding observations from our original dataset with `subset` like this: 
+
+#### Yes the model is now much more linear in the relationship between size and price. 
+
+```{r}
+# fix next line of code.
+hfs = subset( HomesForSaleNY, abs( resid(ll) ) < 600 )
+plot( Price ~ Size, data=hfs)
+ll = lm(Price ~ Size, data=hfs )
+ll
+```
+
+#### d) We removed houses where the price and the size on average caused a large deviation in the residual. It is important to leave this information in to paint a more complete picture of the model, at the same removing paints a more accurate picture of the average. If someone asked me, "How much can I expect to pay for more space" my honest answer would be that you can expect to pay about  400k dollars per extra thousand square feet give or take 70k dollars. 
+
+#### e)
+```{r}
+# make a model to predict price with size, number of bedrooms and number of bathrooms.
+ll_rooms =lm(  Price ~ Size + Beds + Baths, data=HomesForSaleNY )
+plot( Price ~ Size, data=HomesForSaleNY)
+ll_rooms
+```
+
+#### f) They do. If you think about the price of a home, more bathrooms are more desirable. However, the more bedrooms means the less flexibility in layout creating a negative coefficient. 
+#### g) No I don't believe you can make sense of the intercept.  Essentially as this is given in relation to price it can be considered that zero size you are at a price of -83k. Obviously if I don't purchase a house no one is giving me 83,000 dollars.
+#### h) Here we would just multiply our coefficents by the values we would like to predict. 
+```{r}
+ll_model=( 483.9 * 1.5 ) + (-254.9 * 3) + (228.9 * 2) + -83.5
+ll_model
+```
+#### i) If you could please let me know in your comments what exactly you mean by estimate. Some students are suggesting we plot the data and take the % error, but that doesn't seem like an estimation, so for the following answers I have used, in my opinion, pure estimation. 
+
+#### Earlier we estimated that there was about 70k variability in price per 1000 square feet. This house being 1500 square feet you would expect our estimate to be either above or below the actual cost by 105k.
+#### j)
+```{r}
+ll_model=( 483.9 * 5 ) + (-254.9 * 6) + (228.9 * 6) + -83.5
+ll_model
+```
+
+#### We predicted the home to cost about 2 million roughly. Following our variance previousy this is give or take about 350k. As I roughly eyeball the graph I see that a home in that range falls in and around the 350k, but just outside. In short I would not put faith in this model when testing it's upper limits as it seems to be inaccurate. 
+````{r}
+data=HomesForSaleNY
+data
+```
+#### k) I apologize for not wowing you with graphs, but when asked to explore the data my first reaction was to compare size and price between the states. I simply plotted both. I think it yields two important observations. Firstly, when evaluating price you can see that CA and NJ have the most expensive homes. However, NY has some outliers that push its price points higher. I hypothesize that this is because CA and NY contain larger metropolitan areas driving prices higher. I also hypthoesize that the size of homes that do not include these highly desirable locations (NYC and California) will generally be smaller. We can test by simply asking the mean of a subset excluding highly desirable listings.  
+```{r}
+data( HomesForSale )
+head( HomesForSale )
+plot(Price ~ State, data= HomesForSale)
+plot(Size ~ State, data= HomesForSale)
+HomesForSale = subset( HomesForSale, Price < 1000 )
+mean(  Price ~ State, data=HomesForSale )
+HomesForSale = subset( HomesForSale, Size < 3 )
+mean(  Size ~ State, data=HomesForSale )
+
+```
+
+#### When analyzing the result we see my first assumption was incorrect. In reality the average value of NJ homes outweighs the pull of NY's metropolis. Additionally, the lower priced condos in a cities metropolis will generally cost less than a mansion in NJ. So surely my second assumption must be correct and indeed we do see that there is a significant smaller size of home on average in these two highly desirable locations. 
+#### l) 
+```{r}
+HomesForSale = subset( HomesForSale, Size < 4 & Price < 2000 )
+# fix next line
+lfull = lm( Beds ~ Baths, data=HomesForSale )
+```
+
+#### m) 
+
+#### n) Make a plot of the residuals to the fitted values using plot( resid( lfull ) ~ fitted( lfull ) ), where lful| is your linear model.
+
+```{r fig.height=4}
+plot( resid( lfull ) ~ fitted( lfull ) )
+```
+
+#### o)
+
+
+### 6) Simulating Probability Games.  
+
+(See the tutorial for most of the code you need here.) For a particular carnival game, you lift cups and collect coins hidden under the cups.  The carnie in charge claims that under the 20 cups there are 13 nickels, 5 quarters, and 2 one-dollar coins.  To play you pick a cup.  After you pick a cup she gives over the money, puts the same coin back under the cup, and then shuffles the cups around.  In this problem we will give you the R code you need.  You just need to get it to work, understand how it is working, and interpret the results.
+
+#### a)
+
+```{r}
+# fix next line
+tickets = c( 5, 6 )
+sample( tickets, 10, replace=TRUE )
+```
+
+#### b)
+
+#### c) Let's check your work with simulation.  First, play the game 1000 times and store the results in a list.  
+
+```{r}
+games = sample( tickets, 1000, replace=TRUE )
+favstats(games)
+```
+
+#### d)
+
+#### e)
+
+#### f)
+
+#### g)  Play 40 times in R.  How much did you get?
+```{r}
+rounds = sample( tickets, 40, replace=TRUE )
+sum( rounds )
+```
+
+#### h) Estimate via simulation the standard deviation of how much you get in 40 games.  Do this by, 1000 times, playing the game 40 times and adding up what you got.
+```{r}
+games = replicate( 1000, {
+    rounds = sample( tickets, 40, replace=TRUE )
+	  sum( rounds )
+} )
+favstats( games )
+```
+
+In 40 games, the total amount collected will be about XXXXX give or take XXXXX.
+
+#### i) Make a histogram of your 1000 games of 40 rounds each. Describe this distribution.
+```{r}
+# make the chart look good by adding axes and so forth.
+hist( games )
+```
+
+
+#### j) 
+```{r}
+# calculate chance of earning more than 10.00 (1000 pennies)
+```
+
+#### k) 
+
