@@ -1,0 +1,275 @@
+---
+output: pdf_document
+---
+<!-- Instructions: This is the template you will use to type up your responses to the questions. To produce a document that you can turn in just click on the Knit button above. All you need to do to complete the homework is to type up your brief answers as well as, when necessary, the R code in the appropriate spaces provided below.
+-->
+
+
+
+Problem Set #4
+========================================================
+
+#### Your name: Ashkan Bigdeli
+#### Collaborators' names: Brittainy Roth, Nam Pho
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#local({r <- getOption("repos"); 
+#       r["CRAN"] <- "http://cran.r-project.org"; options(repos=r)})
+#install.packages("mosaic")
+#install.packages("mosaicData")
+#install.packages("Lock5Data")
+library(mosaic)
+library(mosaicData)
+library(Lock5Data)
+```
+
+
+
+## #1: R Tutorial
+
+Did you do it?   Yes or No?
+
+Yes
+
+## #2: 6.142, sec 6.6, pg 409
+```{r}
+non_aut = 1.94
+aut= 1.15
+sd = 0.5
+t_stat = (non_aut - aut) / (sd/sqrt(7))
+t_stat
+1 - pt( t_stat, 6)
+```
+With a p value so low we can reject the null hypothesis which means there is evidence that autisitic male children have more neurons on average in the pre-frontal cortext than non-autisitic. 
+
+
+#3: 7.41, sec 7.2, pg 530 and 7.52, sec 7.2, pg 536
+a)
+```{r}
+addict <- matrix(c(10,14,24,18,6,24,20,4,24,48,24,72),ncol=3,byrow=TRUE)
+colnames(addict) <- c("Relapse","No relapse","Total")
+rownames(addict) <- c("Desipramine","Lithium","Placebo", "Total")
+addict <- as.table(addict)
+addict
+chisq.test(addict)
+```
+b)Yes, because you can calculate the expected value and actually see them in the observed table. Here we are comparing two categorical variables and since the counts in our two way table are greater than 5 a chi-squared is appropriate. 
+```{r}
+relapsed = (24 * 48)/72
+relapsed
+sober= (24*24)/72
+sober
+des= (10 - relapsed)^2/relapsed
+li= (18 - relapsed)^2/relapsed
+p= (20 - relapsed)^2/relapsed
+des_s= (14 - sober)^2/sober
+li_s= (6 - sober)^2/sober
+p_s= (4 - sober)^2/sober
+# Programmers note: I could have used chisq.test initially, but I had already typed this bulky code above out so I left it :) Always nice to handle things with one line. 
+chisq= des+li+p+des_s+li_s+p_s
+chisq
+df_chisq =(1-3) * (1-2)
+pchisq(chisq,df=df_chisq, lower.tail=FALSE)
+```
+
+c) Here we see the chi squared is 10.5 and the p-value 0.005 meaning we reject the null hypothesis of the drugs having no effect and accept the alternative that these drugs do indeed deter relapse.  
+
+
+D) As this is randomized experiment we can conclude that yes there is a drug that is most effective. Despiramine has shown a much lower rate of relapse. 
+
+Exercise 7.41 describes an experiment on helping cocaine addicts break the cocaine addiction, in which cocaine addicts were randomized to take desipramine, lithium, or a placebo. The results (relapse or no relapse after six weeks) are summarized in Table 7.35.
+
+(a)  In Exercise 7.41, we calculate a ??2 statistic of 10.5 and use a ??2 distribution to calculate a p-value of 0.005 using these data, but we also could have used a randomization distribution. How would you use cards to generate a randomization sample? What would you write on the cards, how many cards would there be of each type, and what would you do with the cards?
+
+You would have 72 random cards and break these into each drug and placebo. There would be 24 of each card type and this would correspon do the number of lapsed vs. relapsed. 
+
+
+(b)  If you generated 1000 randomization samples according to your procedure from part (a) and calculated the ??2 statistic for each, approximately how many of these statistics do you expect would be greater than or equal to the ??2 statistic of 10.5 found using the original sample?
+```{r}
+addict_sim <- matrix(c(10,14,18,6,20,4),ncol=2,byrow=TRUE)
+colnames(addict_sim) <- c("Relapse","No relapse")
+rownames(addict_sim) <- c("Desipramine","Lithium","Placebo")
+addict <- as.table(addict_sim)
+addict_sim
+chisq.test(addict_sim, simulate.p.value=TRUE, B=1000)
+```
+## #4: 1.94, sec 1.3, pg 43
+(a)  How would you design a randomized comparative experiment?
+
+A randomized comparitive study places randomly and equally places subjects into two groups, experimental and control. In this case 25 athletes would carbo load before an event and 25 would eat normally. The results would then be compared. 
+
+(b)  How would you design a matched pairs experiment?
+
+In a matched pairs experiment each subject participates in both the control group and experimental group. This will account for variation in subjects. Blocking can also be used with subjects to further limit bias. 
+
+(c)  Which design do you think is better for this situation? Why?
+
+With the large number of confounding variables such as age, and athletic ability. A matched pairs experiment would eliminate these. 
+
+## #5 Diet Cola and Calcium
+
+
+#### a Set up a null and alternate hypothesis to address the question of whether or not the mean amount of calcium lost for women who drink diet cola is more than for women who drink water.
+The null hypothesis is the mean of calcium lost would equal the mean calcium lost for women who drink water. The alternative is that they would not equal one another. 
+
+H0 = u calcium lost water = u calcium lost soda  HA = u calcium lost water != u calcium lost soda.
+
+#### b  Using R, carry out an appropriate permutation inference procedure to test your hypothesis.
+```{r}
+data(ColaCalcium)
+mn = mean( Calcium ~ Drink, data= ColaCalcium)
+del = mn[1] -mn[2]
+del
+reps = replicate( 1000, {
+shuf= shuffle( ColaCalcium$Drink )
+mns = mean( ColaCalcium$Calcium ~ shuf )
+mns[2] - mns[1]
+} )
+mean( reps >= del)
+s=sd(ColaCalcium$Drink, data =ColaCalcium)
+t.star = qt( 0.975, df = 16-1)
+#The difference is
+del - t.star * (s/sqrt(16))
+
+# and the CI is:
+del - t.star * (s/sqrt(16)) + s
+del - t.star * (s/sqrt(16)) -s
+  
+```
+
+
+
+#### c  If the analysis in part (a) indicates that the results are significant, construct a 95\% confidence interval to estimate the size of the effect. If the results in part (a) are not significant, combine the data into one sample of 16 values and use it to construct a 95\% confidence interval for the average amount of calcium excreted. Be sure to interpret whichever interval you construct.
+
+Additionally, you'll see that the p value shrinks even further letting us know that we can accept the alternative hypothesis that caclium loss is greater in soda than in water. When we look at our CI from the overall set we do indeed see that the mean backs up our projection.
+
+
+## #6 6.288, sec 6.13, pg 466
+A) Why did the investigators choose a matched-pairs design for this experiment?
+Investigators chose this to eliminate such biases such as baseline testosterone. Using matched pairs we can see the results of both the control and experimental and compare.
+
+B)
+```{r}
+baseline = 155
+tears= 133
+sd = 46.5
+t_stat = (baseline - tears) / (sd/sqrt(50))
+t_stat
+1 - pt( t_stat, 49)
+```
+The p-value is .0007, which is statistically significant because it is below .005. Therefore, testosterone levels are significantly reduced after sniffing tears.
+
+with a p-value of 0.0007 we can be certain that the results are significant and testosterone levels do drop after sniffing tears. 
+
+C) We can conclude that sniffing females tears does in fact reduce testosterone levels and further we can infer causation because we used a matched pairs randomized experiment.  
+
+## #7: Massage Trial (based on 4.132, sec 4.4)
+
+```{r}
+delta = c( 0.6, 4.7, 3.8, 0.4, 1.5, -1.2, 2.8, -0.4, 1.4, 3.5, -2.8 )
+favstats(delta)
+sum(delta)
+```
+
+#### a) Is this an experiment or an observational study? Why is it not double blind?
+The experiment is matched pairs and it is not double blinded because both the participant and administor knew which quadricep was treated.
+
+#### b) What is the sample mean difference in inflammation between no massage and massage?
+I summed the values of the delta to deterine the mean difference to be 14.3.
+
+#### c) We want to test to see if the population mean difference $\mu_D$ is greater than zero, meaning muscles with no treatment have more inflammation than massaged muscles. State the null and alternative hypotheses.
+The null hyptohesis is that massage has no affect on muscle inflamation. H0= massage muscle inflamation = no massage muscle inflamation.
+The alternative hyptohesis is that massage has no affect on muscle inflamation. HA= massage muscle inflamation != no massage muscle inflamation.
+
+
+#### d) Do an appropriate permutation test in R to find the $p$-value.
+
+```{r}
+delta = c( 0.6, 4.7, 3.8, 0.4, 1.5, -1.2, 2.8, -0.4, 1.4, 3.5, -2.8 )
+est = mean(delta)
+n = length(delta)
+
+null.dist = replicate( 1000, {
+rand.flip = sample( c(-1,1), n, replace=T)
+delta * rand.flip
+mean( delta * rand.flip )
+})
+hist(null.dist, col="grey", main="Null-distribution", xlab="Difference in mean") 
+abline(v=est, col="red", lwd=2) 
+```
+
+#### e) Are the results significant at a 5\% level? At a 1\% level? State the conclusion of the test if we assume a 5\% significance level (as the authors of the study did).
+```{r}
+p = mean( null.dist >= est )
+p
+```
+In this permutation test the results would have been signicant at the 5% level, but not the 1%.
+#### f) This is a small sample.  Do we need to worry about t-distributions or any normal approximation?  Why or why not?
+No as this is not based on a normal distribution. 
+
+
+## #8: 6.292, sec 6.13, pg 467 (Story Spoilers)
+
+We first load the data:
+```{r}
+library( Lock5Data )
+data(StorySpoilers)
+dels = StorySpoilers$Spoiler - StorySpoilers$Original
+mean( dels )
+sd( dels )
+stripchart( round(dels,digits=1), method="stack", pch=19 )
+```
+
+#### a) This is a matched-pairs experiment.  Set up and analyze whether the spoiler had any effect, and what that effect is.  Interpret your results in the context of the problem.
+
+```{r}
+dat=data.frame(Spoiled=c(4.7,5.1,7.9,7,7.1,7.2,7.1,7.2,4.8,5.2,4.6,6.7),Originals=c(3.8,4.9,7.4,7.1,6.2,6.1,6.7,7,4.3,5,4.1,6.1))
+mean(dat$Spoiled)
+mean(dat$Originals)
+dat$delta = dat$Spoiled- dat$Original
+dat$delta
+est = mean(dat$delta)
+est
+n= nrow(dat)
+null.dist = replicate( 1000, {
+rand.flip = resample( c(-1,1), n)
+dat$delta * rand.flip
+mean( dat$delta * rand.flip )
+})
+mean(null.dist >=est)
+hist(null.dist, col="grey", main="Null-distribution", xlab="Difference in mean") 
+abline(v=est, col="red", lwd=2)
+```
+
+
+#### b) Now let's pretend it wasn't a matched pairs experiment.  We are going to pretend that the researcher took 24 stories, spoiled 12 of them, and then got ratings for story quality.
+
+We firstmake our dataset look like this as follows:
+```{r}
+FakeStory = data.frame( Tx=rep( c( "Spoiler", "Original"), c(12, 12) ),
+  	Score=c( StorySpoilers$Spoiler, StorySpoilers$Original ) )
+head( FakeStory )
+stripchart( Score ~ Tx, data=FakeStory, method="stack" )
+```
+
+#### Does it look like the treatment works?  How significant does the difference appear?
+No it did not look like it work because there is no association. 
+It does not appear the treatment worked, things seemed it seems to have bumpe the scores a tad higher, but I would not consider it significant. 
+
+#### c) Analyze the FakeStory data as if it were a normal completely randomized experiment by doing a permutation test. What happens to your estimate of the difference?  What happens to your $p$-value?  Explain why you get a significant result with matched-pairs and not with the two-sample test.
+
+```{r}
+mn = mean (StorySpoilers$Spoiler ~ StorySpoilers$Original, data=FakeStory)
+mn
+del = mn[1] -mn[2]
+del
+reps = replicate (1000, {
+  shuf = shuffle (StorySpoilers$Original)
+  mn = mean (StorySpoilers$Spoiler ~ StorySpoilers$Original, data=FakeStory)
+  mn[1] -mn[2]
+})
+mean(reps >= del)
+t.test(StorySpoilers$Spoiler, mu=1.0, data=FakeStory)
+```
+
+Here we see the p-value is incredibly low, this makes sense as a matched pairs would not take into account the randomization that our two sample test does. 
