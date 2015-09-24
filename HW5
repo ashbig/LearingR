@@ -1,0 +1,223 @@
+---
+output: html_document
+---
+<!-- Instructions: This is the template you will use to type up your responses to the questions. To produce a document that you can turn in just click on the Knit button above. All you need to do to complete the homework is to type up your brief answers as well as, when necessary, the R code in the appropriate spaces provided below.
+-->
+
+
+
+Problem Set #5
+========================================================
+
+#### Your name:
+#### Collaborators' names:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(mosaic)
+library(mosaicData)
+library(Lock5Data)
+```
+
+## #3: Histograms of the Total USQ Weeks 1 & 2
+```{r}
+## Read CSV and obtain some basics about the data including histograms.
+USQ = read.csv("USQ.csv",header=TRUE);
+favstats(~T_W1, data = USQ)
+hist(USQ$T_W1, main="USQ Total Week 1", xlab="USQ Total Week 1")
+favstats(~T_W2, data = USQ)
+hist(USQ$T_W2, main="USQ Total Week 2", xlab="USQ Total Week 2")
+t.test(USQ$M_W1,USQ$W_W1)
+t.test(USQ$M_W2,USQ$W_W2)
+## Create variables to store means for plotting
+MW1=mean(USQ$M_W1, na.rm=TRUE)
+MW2=mean(USQ$M_W2, na.rm=TRUE)
+WW1=mean(USQ$W_W1, na.rm=TRUE)
+WW2=mean(USQ$W_W2, na.rm=TRUE)
+#Bar plot of means
+barplot(matrix(c(WW1,WW2,MW1,MW2), nr=2),main="Mean Scores: USQ", xlab="Sex", beside=TRUE, col=c("darkblue", "red"),ylim = c(0, 30),names.arg=c("Female","Male"))
+legend("topright", c("Week 1","Week 2"), pch=15, col=c("darkblue", "red"), bty="n")
+box()
+```
+
+```{r}
+LSS = read.csv("LSS.csv",header=TRUE);
+favstats(~T_W2, data = LSS)
+hist(LSS$T_W1, main="LSS Total Week 1", xlab="LSS Total Week 1")
+favstats(~T_W2, data = LSS)
+hist(LSS$T_W2, main="LSS Total Week 2", xlab="LSS Total Week 2")
+t.test(LSS$M_W1,LSS$W_W1)
+t.test(LSS$M_W2,LSS$W_W2)
+MW1=mean(LSS$M_W1, na.rm=TRUE)
+MW2=mean(LSS$M_W2, na.rm=TRUE)
+WW1=mean(LSS$W_W1, na.rm=TRUE)
+WW2=mean(LSS$W_W2, na.rm=TRUE)
+barplot(matrix(c(WW1,WW2,MW1,MW2), nr=2),main="Mean Scores: LSS", xlab="Sex", beside=TRUE, col=c("darkblue", "red"),ylim = c(0, 120),names.arg=c("Female","Male"))
+legend("topright", c("Week 1","Week 2"), pch=15, col=c("darkblue", "red"), bty="n")
+box()
+```
+
+
+
+```{r}
+COPING = read.csv("COPING.csv",header=TRUE);
+favstats(~T_W2, data = COPING)
+hist(COPING$T_W1,main="Coping Total Week 1", xlab="Coping Total Week 1")
+favstats(~T_W2, data = COPING)
+hist(COPING$T_W2, main="Coping Total Week 2", xlab="Coping Total Week 2")
+t.test(COPING$M_W1,COPING$W_W1)
+t.test(COPING$M_W2,COPING$W_W2)
+MW1=mean(COPING$M_W1, na.rm=TRUE)
+MW2=mean(COPING$M_W2, na.rm=TRUE)
+WW1=mean(COPING$W_W1, na.rm=TRUE)
+WW2=mean(COPING$W_W2, na.rm=TRUE)
+barplot(matrix(c(WW1,WW2,MW1,MW2), nr=2),main="Mean Scores: Coping", xlab="Sex", beside=TRUE, col=c("darkblue", "red"),ylim = c(0, 100),names.arg=c("Female","Male"))
+legend("topright", c("Week 1","Week 2"), pch=15, col=c("darkblue", "red"), bty="n")
+```
+#### a) 
+Here we used a t-test to determine the relationship between mortality and systolic blood pressure.
+The null hypothesis is that systolic pressure has no bearing on mortality.
+The alternative hypothesis is that systolic pressure is correlated to mortality.
+The parameters are population of 200 and the stastitic of sytolic pressure and response variable of mortality. 
+#### b) 
+The 95 percent confidence interval is 2.939 30.699.
+
+#### c) 
+No difference is not plausible as we see a difference in means of 16.8. This means that in the group of those that live, their average sytolic pressure was higher
+#### d) 
+Yes, to run the t-test we have made the asssumption that there is a normal distribution of systolic pressure in both groups. 
+
+## #4: The CAOS Exam.
+
+#### a)
+
+```{r}
+data(CAOSExam)
+mean(CAOSExam$Pretest)
+mean(CAOSExam$Posttest)
+t.test(Pretest ~ Posttest, data=CAOSExam)
+```
+
+#### b)
+As we see above the 95% CI falls between 53.12 and 67.38 and there is a very high confidence when we view the p value. However, below we will isolate just those who have scored above 54%. I have set the mean to 54.
+```{r}
+t.test(CAOSExam$Posttest, mu=54.0, alternative = "greater")
+```
+Here we see that the p-value increases a great deal, but still falls within our 0.05 limit of accepting the alternative hypothesis that infact, the students exceed the national benchmark of 54.
+#### c)
+
+```{r}
+t.test(CAOSExam$Pretest, mu=44.9, alternative = "greater")
+```
+No, while the mean is higher, the p-value does not fall within the 0.05 range and so we accept the null hypothesis that the students have started at an equal level. 
+#### d)
+```{r}
+t.test(CAOSExam$Posttest, CAOSExam$Pretest, mu=9.1, alternative="greater")
+```
+Here we are testing to see if the instructor has improved socres more than 9.1 points and we see in fact he has. However, the p value is too high to have any real confidence in this test. Therefore we must accept the null hypothesis that the professor did not impprove grades beyond the average of 9.1.
+## #5 House prices, again.
+
+#### a)
+
+```{r}
+data(HomesForSale)
+HFSDO=subset(HomesForSale,Size<4&Price<2000)
+lfull = lm(Price ~  State + Size + Beds + Baths, data=HFSDO)
+lfull
+plot(resid(lfull)~fitted(lfull))
+```
+
+#### b)
+This price of this would be about $400,000
+
+#### c)
+
+```{r}
+HFSCA=subset(HomesForSale, State =="CA")
+confint_CA<-predict(lfull,HFSCA, interval=c("confidence"))
+t.test(confint_CA)
+```
+
+#### d)
+
+#### e)
+
+```{r}
+# code here
+```
+
+#### f)
+
+#### g)
+
+## #6: Predicting Mercury Levels in Fish.
+
+#### a)
+
+```{r}
+# code here
+```
+
+#### b)
+
+```{r}
+# code here
+```
+
+## #7: Reading Academic Papers
+
+#### a)
+Study# 1
+The null is that neither conscious thought or unconsious will affect the ability to choose the best car. With the alternative being that that conscious vs unconcious thought will affect the ability to choose th ebest car.
+Study# 2
+The thought here is that neither thought will affect the attitude towards the best or worst cars and the alternative hypothesis is that  conscious vs unconcious will affect the view on of the best and worst cars. 
+Study# 3
+The null hypothesis is satisication with a product will not be affected, regardless of complexity, if the individual thought of the product or not.
+Study# 4
+The null hypothesis is that satisifcation of a simple or complex product will not be affected by either thought process.
+The alternative is that concious or subconcious thought will affect satisfaction of a simple or complex product. 
+The alternative is that satisifcation will be affected.
+
+B)
+Study #1 and #2 are both experimental. Data was collected from subjects who were exposed to one of 
+two conditions. The first was conscious thought (i.e., The subject thought about the product for four 
+minutes before making a decision), and the second was unconscious thought (i.e, The subject was asked 
+to complete puzzles for four minutes before making a decision.). Causality can be established from 
+experiments.
+
+Study #3 and #4 are observational studies. Data was collected from subjects who were surveyed 
+regarding various aspects of a recent purchase including if they thought about the product before buying it and their satisfaction after. Causality cannot be determined from an observational study. Therefore, these two studies only established associations.
+
+c) 
+The data for the first study may have looked as follows: 
+
+Simple Condition (4 aspects)
+Chose Desirable Car Chose Less Desirable Car Total 
+Conscious thought 12 10 22 
+Unconcious thought 9 13 22 
+Total 21 23 
+
+Complex Condition (12 aspects) 
+
+Chose Desirable Car Chose Less Desirable Car Total 
+Conscious thought 6 16 22 
+Unconcious thought 13 9 22 
+Total 19 25 
+
+d) The sample sizes are small (i.e., less than 30) so a t.test is used here. We do make the assumption of a normal distribution. 
+## #8: Massage and inflammation (sec 4.5)
+
+#### a)
+
+#### b)
+
+#### c)
+
+## #9: Multiple Choice Exams.
+
+#### a)
+
+#### b)
+
+#### c)
+
+#### d)
