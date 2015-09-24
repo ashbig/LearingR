@@ -1,0 +1,221 @@
+<!-- Instructions: This is the template you will use to type up your responses to the exercises and the on your own questions. To produce a document that you can turn in just click on Knit HTML above. All you need to do to complete the lab is to type up your BRIEF answers and the R code (when necessary) in the spaces provided below. If you want to find out more about the markdown language click on the MD icon. 
+
+IMPORTANT: Please read the relevant hw.pdf file before messing with this document!!!
+-->
+
+Homework 1
+========================================================
+
+#### Your name: Ashkan Bigdeli
+
+#### Collaborators names: Nam Pho
+
+```{r echo=FALSE, message=FALSE}
+# This loads your data
+library( mosaic )
+library( mosaicData )
+```
+
+
+#### Question 1: Do tanning salons mislead their customers?
+a) _What is the sample?_
+
+A:  With the population being all tanning salons in the US the sample would then be the 300 selected tanning salons.
+
+b) _Do you think the sample is representative of all tanning salons in the US?_
+
+A: Yes, each state is included in the study as well including at least 3 randomized selections from each. 
+
+c) _Although the sample is random, discuss why the results may not paint an accurate picture of the dangers of tanning._
+
+A: The results may not paint an accurate picture as the investigators posed as all fair skinned teenage girls and omitted all other demographics in their inquiry. 
+
+d) _Do you think the study accurately portrays the messages tanning salons give to teenage girls?_
+
+A: I think that this study accurately portrays the message tanning salons send to fair skin teenage girls, but data is not present to conclude that it is the message sent to all teenage girls.
+
+#### Question 2: Simpson's Paradox.
+
+a) _Considering only patients in good condition, which hospital has a lower death rate?_
+Hospital A has a lower death rate for patients in good condition. 
+b) _Considering only patients in poor condition, which hospital has a lower death rate?_
+Hospital has a lower death rate for patients in poor condition. 
+
+c) _No matter what condition a patient is in, which hospital is the best choice?_
+Independent of condition you would visit the hospital with the overall lower mortality rate, which is hospital B. 
+d)  _Generate a table of overall death rates_
+* On piazza it was suggested we make the table to mimic the pdf for homework one. I have included both a table of overall deaths and below it included death rates. 
+The table of results when ignoring initial condition is
+Overall:
+     | Hospital A | Hospital B
+-----|------------|--------------
+Died |   63       |    16
+Survived|   2037  |    684
+
+Rates:
+     | Hospital A | Hospital B
+-----|------------|--------------
+Died |   3.0%     |    2.28%
+Survived |   97.0%     |    97.7%
+e) _Use your work to determine which hospital has a lower death rate._
+Hospital B has a lower overal death rate.
+f) _Discuss the discrepancy_
+Here the discre
+g) (Optional) _Find another example on the web._
+
+For honesty sake I googled 'Simpsons Paradox example'. I did intiate a discussion on Piazza and one student provided a nice batting practice example tha tworked well for me. 
+
+http://blog.revolutionanalytics.com/2013/07/a-great-example-of-simpsons-paradox.html
+
+Here we see that the us median wage has risen 1%. The paradox here is that wages have increased for those with college degrees and dropped for those without. In actuality wages have fallen since the year 2000, but when compared to college graduates seems to have reason. Here the paradox lies in perception. 
+#### Question 3: Criminal justice data set.
+
+#### Load the data
+
+```{r}
+# need to replace next line with where the file is.  See homework for how.
+# code for Exercise 1 is already entered below as an example
+criminal_justice <- read.csv("criminal_justice.csv")
+head(criminal_justice)
+summary(criminal_justice )
+```
+
+
+1) _Why do you think police records are not the sole source for the data on violent crime rates?_
+
+A: Violent crimes can occur where police records are not established. This includes, but is not limited to, violent crimes committed by police, unreported violent crimes and violent crimes that do not result in arrest. 
+
+2) _Calculate the mean, median, standard deviation, and interquartile range for the variable 'violent_crime'_
+
+```{r}
+summary(criminal_justice$violent_crime)
+```
+
+A: The mean of the variable 'violent_crime' is 44.6. The median is 384.0 interquartile range 281.5 - 549.5.
+
+3) _Plot a histogram of the variable 'violent_crime'._
+
+```{r}
+hist(criminal_justice$violent_crime, col="grey", xlab="violent crime", ylab="Number of states", main="Violent Crime Rates of States (2004)" )
+
+```
+
+4) _Discuss these results and describe the distribution of violent crime (shape, center, spread). Also, any outliers?_
+
+A: The shape is skewed right and there is one outlier at 1500. 
+
+5) _Draw a second histogram where you increase the number of bins from the default (7 in this case, I believe) to 15. What is visible in the second plot that is hidden in the first plot?_
+
+```{r}
+hist(criminal_justice$violent_crime, breaks=15, col="grey", xlab="violent crime", ylab="Number of states", main="Violent Crime Rates of States (2004)" )
+```
+A: Another outlier becomes visible, it is a single state on the low end of the violent crime spectrum. 
+
+#### Dividing the data
+6) _Calculate the median of the variable police, i.e., median of the distribution of the amount spent per capita on police across states (including DC). You are now going to make a new variable of high police states and low police states. A state will be a high state if it pays more than the median, and a low state otherwise. You can make this new variable with the recode command._
+```{r}
+median (criminal_justice$police)
+criminal_justice$high_police = recode( criminal_justice$police, "lo:189='no'; else='yes'" )
+tally( ~high_police, data=criminal_justice )
+```
+_Make your new variable and count the number of states that are high payment and low payment. Does this align with what you expect, given the definition of a median?_
+
+A: Yes, median is defined as the middle of the data set and the resulting data shows that half the points are above and below our set point of 190 showing aligning with what one would expect.
+
+7)  _Calculate the mean for 'violent_crime' for each of your two groups separately. They will differ. Show your results and discuss possible reasons why you think they differ.
+```{r}
+mean(criminal_justice$violent_crime ~ criminal_justice$high_police)
+```
+A: When calculating the mean for areas of high police and low police we see that areas of low police has a lower mean of violent crimes at 363.0. This is likely due to areas of lower population in addition to lower areas of crime rate. This would call for a lower amount to spent on police. In contrast areas where the mean of violent crimes is higher would, justifably, call for higher spending on police. 
+
+8) _Make a scatterplot showing the relationship between 'violent_crime' and 'police'._
+```{r}
+# make your scatterplot for 8) and 10) here
+plot(violent_crime~police, data=criminal_justice, xlab="violent crime", ylab="police" )
+```
+_Describe the relationship. Are there any outliers? Is the trend linear?_
+
+A: The trend is not linear, you can see areas that have low crime rates and a large police presence. There is also an outlier at the extreme end of the spectrum. Generally speaking however areas of about 300 violent crimes or more tend to have a larger police presence.
+
+9) _Do the same for violent crime and judicial expenditures. Compare the strength of the relationship in this plot to the original plot. Are there outliers in the judicial expenditures?_
+```{r}
+# make your scatterplot for 9) here
+plot(violent_crime~judicial, data=criminal_justice, xlab="violent crime", ylab="judical expenditure" )
+```
+
+A: The relationship here is much stronger between violent crimes comitted and the amount of judicial expenditures. The greater the number of violent crimes the greater cost on judicial proceedings. There are a few significant outliers on both ends, where the number is of crimes is low, but the cost of proceedings very high. Additionally there are some middle crime rate areas with  surpisingly low judical expenditures.
+
+10) _Make a linear model to predict violent crime with the police variable. Be sure to use all your data. Using abline(), add this line to your scatterplot in 8). Use it to predict the violent crime for a hypothetical state that only paid 100 per capita on police. Does this prediction make sense given the data you have?_
+```{r}
+f_line <- lm(violent_crime ~ police, data=criminal_justice)
+plot(violent_crime~police, data=criminal_justice, xlab="violent crime", ylab="police" )
+abline(f_line)
+```
+
+A: It does, it is not perfect, but it is in the ball park for a good estimate. Using this graph we see that a state that only paid 100 per capita on police would expect about 280 or so violent crimes a year. Our previous mean with states that spent less that 190 per capita on police was about 360. So I think this prediction is within reason. 
+
+
+#### Dropping outliers
+
+11) _Now find and remove any outliers using the subset command. Here is the subset() command being used to drop all states with a per-capita judicial payment of 100 or more._
+```{r}
+nrow( criminal_justice )
+crim = subset( criminal_justice, judicial < 100 )
+nrow( crim )
+```
+
+12) _With your new dataset, make a new linear model and use it to predict violent crime for a 100 per capita cost. Add this line to your plot as well, but make it a different color._
+
+```{r}
+# reproduce your scatterplot from 9) here, add the new line with a different color.
+f_line2 <- lm(violent_crime ~ police, data=crim)
+f_line <- lm(violent_crime ~ police, data=criminal_justice)
+plot(violent_crime~police, data=criminal_justice, xlab="violent crime", ylab="police" )
+abline(f_line2, col= "red")
+abline(f_line)
+
+```
+_Which is better, do you think? Which gives a better prediction?_
+
+A:  I have given my answer based upon 100 per capita on police cost. The wording was abit confusing.
+
+I think the line with outliers removed certainly gives better predictions. The outlier caused the line to be a bit more flat at first and didn't encompass the data set as accurately. You can see several outliers on the lower end that were no where near the intial best fit line. The second line, outliers removed, provides a much better method for estimation. 
+
+13) _A senator looks at your work and proposes slashing police costs. What do you say to this?_
+
+A: I'd say it depends on where that senator lived. Generally speaking, the more violent crimes the higher the police cost and areas with lower spending had lower violent crimes. However, this does not mean that cutting costs will result in lower crimes. Having said that, there were quite a few areas that spent a lot on their police despite not having high crime rates relative to other areas.
+
+#### Question 4: A small, causal survey.
+0) _What questions were on your survey? Does each question correspond to a categorical or quantitative variable?_
+
+A: Yes each question corresponds to a categorical or quantitative variable. I asked my friends if they played sports and if they exercised. Next I asked them the total amount of hours they excerised a week. 
+
+1) _Make a small csv file with your data and load it into R._
+```{r}
+# data loading
+active <- read.csv("active.csv")
+```
+2) _Compute the mean of a quantitative variable._
+```{r}
+# compute the mean
+mean(active$Active_hours)
+```
+
+3) _Make a table of your categorical variable._
+```{r}
+# make a table
+tally( ~sports, data=active )
+```
+4) _Either make a scatterplot or a side-by-side bar plot of two of your variables._
+```{r}
+# plot of your choice with two variables
+plot(Calories_day~Active_hours, data=active, xlab="Active Hours", ylab="Calories a day" )
+
+```
+5) _A sentence of interpretation of your results (ignoring issues of sampling, etc.)._
+
+A: Generally speaking those that are more active require more calories per day.
+
+6) _Do your results generalize to some wider population? Why or why not? And if they do, what population?_
+
+A: I think that this holds true for those that maintain a 2000 calorie diet typically, and while excerising the body would naturally need more nutrients so naturally more calories would be taken in. This may not hold true for someone who eats quite a bit and never exercises. A bias I quickly found out is that since the back of all packages says "based on a 2000 calorie diet" and most I asked gave something within this ball park.
